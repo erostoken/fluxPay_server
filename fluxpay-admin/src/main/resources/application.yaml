@@ -39,7 +39,7 @@ spring:
   # ── Redis（Spring Boot 3 统一使用 spring.data.redis）─────────────
   data:
     redis:
-      host: ${REDIS_HOST:82.157.8.205}
+      host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
       password: ${REDIS_PASSWORD:VMoEXKYYAwb6ykzg}
       database: 0
