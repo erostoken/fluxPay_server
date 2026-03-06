@@ -29,7 +29,7 @@
         <!-- 数据层 -->
         <mybatis-spring-boot.version>3.0.4</mybatis-spring-boot.version>
         <mybatis-plus.version>3.5.9</mybatis-plus.version>
-        <flyway.version>10.20.1</flyway.version>
+        <com-alibaba-druid.version>1.2.20</com-alibaba-druid.version>
 
         <!-- 工具 -->
         <hutool.version>5.8.35</hutool.version>
@@ -81,11 +81,10 @@
                 <version>${mybatis-plus.version}</version>
             </dependency>
 
-            <!-- Flyway -->
             <dependency>
-                <groupId>org.flywaydb</groupId>
-                <artifactId>flyway-mysql</artifactId>
-                <version>${flyway.version}</version>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${com-alibaba-druid.version}</version>
             </dependency>
 
             <!-- JWT -->
@@ -160,13 +159,16 @@
                         <source>${java.version}</source>
                         <target>${java.version}</target>
                         <annotationProcessorPaths>
+                            <!-- lombok.version 由 spring-boot-starter-parent 统一管理 -->
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
                             </path>
                             <path>
                                 <groupId>org.mapstruct</groupId>
                                 <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>

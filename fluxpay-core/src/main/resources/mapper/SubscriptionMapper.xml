@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fluxpay.core.mapper.SubscriptionMapper">
+
+    <resultMap id="BaseResultMap" type="com.fluxpay.core.entity.Subscription">
+            <id property="id" column="id" />
+            <result property="tenantId" column="tenant_id" />
+            <result property="planId" column="plan_id" />
+            <result property="status" column="status" />
+            <result property="periodType" column="period_type" />
+            <result property="startDate" column="start_date" />
+            <result property="nextRenewDate" column="next_renew_date" />
+            <result property="remainingQuota" column="remaining_quota" />
+            <result property="planName" column="plan_name" />
+            <result property="planPrice" column="plan_price" />
+            <result property="planQuota" column="plan_quota" />
+            <result property="planMaxMember" column="plan_max_member" />
+            <result property="createdTime" column="created_time" />
+            <result property="createdBy" column="created_by" />
+            <result property="updatedTime" column="updated_time" />
+            <result property="updatedBy" column="updated_by" />
+            <result property="isDeleted" column="is_deleted" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tenant_id,plan_id,status,period_type,start_date,
+        next_renew_date,remaining_quota,plan_name,plan_price,plan_quota,
+        plan_max_member,created_time,created_by,updated_time,updated_by,
+        is_deleted
+    </sql>
+</mapper>
