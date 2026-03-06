@@ -1,0 +1,102 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: fluxpay-gateway
+
+  # ── 数据源（HikariCP，网关读取 API Key / 套餐鉴权数据）───────────
+  # 注意：Gateway 运行于 WebFlux（响应式）环境，JDBC 调用须在
+  #       Schedulers.boundedElastic() 线程池中执行，避免阻塞 event-loop
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:fluxpay}?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf8mb4
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      idle-timeout: 300000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      connection-test-query: SELECT 1
+
+  # ── Redis（响应式 Lettuce，令牌桶限流 + API Key 缓存）─────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: 2
+      timeout: 1000ms
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 16
+          max-active: 64
+          max-wait: 500ms
+
+  # ── Spring Cloud Gateway 路由 ─────────────────────────────────
+  cloud:
+    gateway:
+      # 全局超时（ms）
+      httpclient:
+        connect-timeout: 3000
+        response-timeout: 10s
+      # 路由由代码（RouteConfig）动态注册，此处保留示例占位
+      routes: []
+      # 全局跨域配置（前端 API 调用）
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origin-patterns: "*"
+            allowed-methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowed-headers: "*"
+            allow-credentials: true
+            max-age: 3600
+      # 关闭转发请求中的敏感头（避免泄露 Authorization 到上游）
+      default-filters:
+        - RemoveRequestHeader=Cookie
+
+  # ── Jackson ───────────────────────────────────────────────────
+  jackson:
+    time-zone: Asia/Shanghai
+    default-property-inclusion: non_null
+
+# ── MyBatis-Plus（仅查询，不写入）─────────────────────────────────
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.fluxpay.core.entity
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# ── 自定义网关配置 ─────────────────────────────────────────────
+fluxpay:
+  jwt:
+    secret: ${JWT_SECRET:FluxPaySecretKey2026MustBeAtLeast32Chars!!}
+  gateway:
+    # API Key 缓存在 Redis 的 TTL（秒）
+    api-key-cache-ttl: 300
+    # 预扣超时未确认自动退回阈值（秒）
+    pre-deduct-timeout: 300
+
+# ── 日志 ───────────────────────────────────────────────────────
+logging:
+  level:
+    com.fluxpay: debug
+    org.springframework.cloud.gateway: info
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n"

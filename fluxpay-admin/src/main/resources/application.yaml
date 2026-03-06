@@ -1,48 +1,111 @@
+server:
+  port: 8081
+  servlet:
+    context-path: /api/admin
+
 spring:
   application:
-    name: admin
+    name: fluxpay-admin
 
-  redis:
-    password: VMoEXKYYAwb6ykzg
-    database: 0
-    port: 6379
-    jedis:
-      pool:
-        max-idle: 10
-        min-idle: 0
-        max-active: 200
-        max-wait: -1
-    host: 82.157.8.205
-    timeout: 1000
-
+  # ── 数据源（Druid 连接池）──────────────────────────────────────
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/fluxpay?serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: root
-    password: 314159
-    #???????druid
     type: com.alibaba.druid.pool.DruidDataSource
-    #??????
-    druid.initial-size: 10
-    #?????
-    druid.min-idle: 100
-    #?????
-    druid.max-active: 1000
-    #????????????????
-    druid.max-wait: 60000
-    #????????
-    druid.validation-query: SELECT 1 FROM DUAL
-    druid.test-on-borrow: false
-    druid.test-on-return: false
-    #?????????
-    druid.test-while-idle: true
-    #???????????????????????????????
-    druid.time-between-eviction-runs-millis: 60000
-    # ??????????????????????
-    druid.min-victable-idle-time-millis: 300000
-    #?????? ?????
-    druid.query-timeout: 60000
-    #??????
-    #druid.keep-alive: true
-    # ??connectProperties?????mergeSql????SQL??:???
-    druid.connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:fluxpay}?serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true&zeroDateTimeBehavior=convertToNull&characterEncoding=UTF-8&allowMultiQueries=true
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:314159}
+    druid:
+      # 初始/最小/最大连接数
+      initial-size: 5
+      min-idle: 5
+      max-active: 50
+      # 获取连接最大等待时间（ms）
+      max-wait: 60000
+      # 连接有效性检测
+      validation-query: SELECT 1
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      # 空闲连接检测间隔（ms）
+      time-between-eviction-runs-millis: 60000
+      # 连接最小存活时间（ms）
+      min-evictable-idle-time-millis: 300000
+      # 慢 SQL 监控（2秒）
+      connection-properties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=2000
+      # 生产关闭监控页，避免暴露敏感信息
+      stat-view-servlet:
+        enabled: false
+
+  # ── Redis（Spring Boot 3 统一使用 spring.data.redis）─────────────
+  data:
+    redis:
+      host: ${REDIS_HOST:82.157.8.205}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:VMoEXKYYAwb6ykzg}
+      database: 0
+      timeout: 3000ms
+      lettuce:
+        pool:
+          min-idle: 0
+          max-idle: 8
+          max-active: 16
+          max-wait: 1000ms
+
+  # ── Jackson ───────────────────────────────────────────────────
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+
+  # ── Spring Security 关闭默认密码日志（由 JWT 接管认证）──────────
+  security:
+    user:
+      password: disabled
+
+# ── MyBatis-Plus ───────────────────────────────────────────────
+mybatis-plus:
+  # core 模块打包后 XML mapper 在 classpath 下
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.fluxpay.core.entity
+  global-config:
+    db-config:
+      # 主键策略：数据库自增
+      id-type: auto
+      # 逻辑删除字段（对应实体的 isDeleted 属性）
+      logic-delete-field: isDeleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      # 自动回填 created_time / updated_time（需配合 MetaObjectHandler）
+      insert-strategy: not_null
+      update-strategy: not_null
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+# ── 自定义 JWT 配置（绑定到 JwtConfig @ConfigurationProperties）──
+fluxpay:
+  jwt:
+    secret: ${JWT_SECRET:FluxPaySecretKey2026MustBeAtLeast32Chars!!}
+    # Access Token 有效期（秒）：2 小时
+    access-token-expire: 7200
+    # Refresh Token 有效期（秒）：7 天
+    refresh-token-expire: 604800
+  crypto:
+    # 是否开启前后端加解密（生产环境建议 true）
+    enabled: true
+    rsa-key-size: 2048
+    # 固定密钥（Base64），不填则每次启动自动生成（开发模式）
+    # public-key:  ${CRYPTO_PUBLIC_KEY:}
+    # private-key: ${CRYPTO_PRIVATE_KEY:}
+
+# ── 日志 ───────────────────────────────────────────────────────
+logging:
+  level:
+    com.fluxpay: debug
+    org.springframework.security: warn
+    com.alibaba.druid: warn
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{40} - %msg%n"

@@ -80,6 +80,12 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!-- AOP（FieldDecryptAspect 所需 aspectjweaver） -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
         <!-- 工具 -->
         <dependency>
             <groupId>cn.hutool</groupId>
