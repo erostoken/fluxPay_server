@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.user;
+package com.fluxpay.admin.domain.vo.req.user;
 
 import com.fluxpay.common.dto.PageDTO;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserPageReqDTO extends PageDTO {
+public class UserPageReq extends PageDTO {
 
     /** 用户名（模糊匹配） */
     private String username;

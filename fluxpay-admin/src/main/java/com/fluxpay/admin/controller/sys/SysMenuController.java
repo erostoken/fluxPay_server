@@ -1,7 +1,7 @@
 package com.fluxpay.admin.controller.sys;
 
-import com.fluxpay.admin.dto.menu.MenuSaveReqDTO;
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
+import com.fluxpay.admin.domain.vo.req.menu.MenuSaveReq;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
 import com.fluxpay.admin.service.AdminMenuService;
 import com.fluxpay.common.result.Result;
 import jakarta.validation.Valid;
@@ -31,26 +31,26 @@ public class SysMenuController {
 
     /** 查询完整菜单树 */
     @GetMapping
-    public Result<List<MenuTreeVO>> tree() {
+    public Result<List<MenuTreeResp>> tree() {
         return Result.ok(adminMenuService.tree());
     }
 
     /** 查询单个菜单详情 */
     @GetMapping("/{id}")
-    public Result<MenuTreeVO> getById(@PathVariable Long id) {
+    public Result<MenuTreeResp> getById(@PathVariable Long id) {
         return Result.ok(adminMenuService.getById(id));
     }
 
     /** 新建菜单 */
     @PostMapping("/save")
-    public Result<Long> save(@Valid @RequestBody MenuSaveReqDTO req) {
+    public Result<Long> save(@Valid @RequestBody MenuSaveReq req) {
         return Result.ok(adminMenuService.save(req));
     }
 
     /** 修改菜单 */
     @PostMapping("/{id}/update")
     public Result<Void> update(@PathVariable Long id,
-                               @Valid @RequestBody MenuSaveReqDTO req) {
+                               @Valid @RequestBody MenuSaveReq req) {
         adminMenuService.update(id, req);
         return Result.ok();
     }

@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.auth;
+package com.fluxpay.admin.domain.vo.resp.auth;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UserInfoVO {
+public class UserInfoResp {
 
     private Long   id;
     private String username;

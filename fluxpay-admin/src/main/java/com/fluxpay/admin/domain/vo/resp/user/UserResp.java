@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.user;
+package com.fluxpay.admin.domain.vo.resp.user;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 用户信息响应 VO
+ * 用户信息响应
  */
 @Data
-public class UserRespVO {
+public class UserResp {
 
     private Long id;
     private String username;

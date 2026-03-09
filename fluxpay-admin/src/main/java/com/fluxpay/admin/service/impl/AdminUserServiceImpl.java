@@ -3,10 +3,10 @@ package com.fluxpay.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fluxpay.admin.dto.user.UserPageReqDTO;
-import com.fluxpay.admin.dto.user.UserRespVO;
-import com.fluxpay.admin.dto.user.UserSaveReqDTO;
-import com.fluxpay.admin.dto.user.UserUpdateReqDTO;
+import com.fluxpay.admin.domain.vo.req.user.UserPageReq;
+import com.fluxpay.admin.domain.vo.resp.user.UserResp;
+import com.fluxpay.admin.domain.vo.req.user.UserSaveReq;
+import com.fluxpay.admin.domain.vo.req.user.UserUpdateReq;
 import com.fluxpay.admin.service.AdminUserService;
 import com.fluxpay.common.dto.PageVO;
 import com.fluxpay.common.exception.BusinessException;
@@ -37,7 +37,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     private final PasswordEncoder    passwordEncoder;
 
     @Override
-    public PageVO<UserRespVO> page(UserPageReqDTO req) {
+    public PageVO<UserResp> page(UserPageReq req) {
         LambdaQueryWrapper<SysUser> wrapper = new LambdaQueryWrapper<SysUser>()
                 .eq(SysUser::getIsDeleted, 0)
                 .like(StringUtils.hasText(req.getUsername()), SysUser::getUsername, req.getUsername())
@@ -52,12 +52,12 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public UserRespVO getById(Long id) {
+    public UserResp getById(Long id) {
         SysUser user = sysUserService.getById(id);
         if (user == null || user.getIsDeleted() == 1) {
             throw new BusinessException(ResultCode.NOT_FOUND);
         }
-        UserRespVO vo = toRespVO(user);
+        UserResp vo = toRespVO(user);
         // 查询角色列表
         List<Long> roleIds = sysUserRoleService
                 .list(new LambdaQueryWrapper<SysUserRole>().eq(SysUserRole::getUserId, id))
@@ -69,7 +69,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     }
 
     @Override
-    public Long save(UserSaveReqDTO req) {
+    public Long save(UserSaveReq req) {
         // 用户名唯一性校验
         long count = sysUserService.count(
                 new LambdaQueryWrapper<SysUser>()
@@ -93,7 +93,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(Long id, UserUpdateReqDTO req) {
+    public void update(Long id, UserUpdateReq req) {
         SysUser user = getExistUser(id);
         SysUser update = new SysUser();
         update.setId(id);
@@ -161,8 +161,8 @@ public class AdminUserServiceImpl implements AdminUserService {
         return user;
     }
 
-    private UserRespVO toRespVO(SysUser user) {
-        UserRespVO vo = new UserRespVO();
+    private UserResp toRespVO(SysUser user) {
+        UserResp vo = new UserResp();
         vo.setId(user.getId());
         vo.setUsername(user.getUsername());
         vo.setPhone(user.getPhone());

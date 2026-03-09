@@ -1,8 +1,8 @@
 package com.fluxpay.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fluxpay.admin.dto.menu.MenuSaveReqDTO;
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
+import com.fluxpay.admin.domain.vo.req.menu.MenuSaveReq;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
 import com.fluxpay.admin.service.AdminMenuService;
 import com.fluxpay.common.exception.BusinessException;
 import com.fluxpay.common.result.ResultCode;
@@ -26,7 +26,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     private final SysMenuService sysMenuService;
 
     @Override
-    public List<MenuTreeVO> tree() {
+    public List<MenuTreeResp> tree() {
         List<SysMenu> all = sysMenuService.list(
                 new LambdaQueryWrapper<SysMenu>()
                         .eq(SysMenu::getIsDeleted, 0)
@@ -36,13 +36,13 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public MenuTreeVO getById(Long id) {
+    public MenuTreeResp getById(Long id) {
         SysMenu menu = getExistMenu(id);
         return toVO(menu);
     }
 
     @Override
-    public Long save(MenuSaveReqDTO req) {
+    public Long save(MenuSaveReq req) {
         SysMenu menu = new SysMenu();
         fillFromReq(menu, req);
         menu.setCreatedTime(new Date());
@@ -53,7 +53,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     }
 
     @Override
-    public void update(Long id, MenuSaveReqDTO req) {
+    public void update(Long id, MenuSaveReq req) {
         getExistMenu(id);
         SysMenu menu = new SysMenu();
         menu.setId(id);
@@ -93,17 +93,17 @@ public class AdminMenuServiceImpl implements AdminMenuService {
     /**
      * 递归构建菜单树
      */
-    private List<MenuTreeVO> buildTree(List<SysMenu> all, Long parentId) {
+    private List<MenuTreeResp> buildTree(List<SysMenu> all, Long parentId) {
         Map<Long, List<SysMenu>> grouped = all.stream()
                 .collect(Collectors.groupingBy(SysMenu::getParentId));
 
         return buildChildren(grouped, parentId);
     }
 
-    private List<MenuTreeVO> buildChildren(Map<Long, List<SysMenu>> grouped, Long parentId) {
+    private List<MenuTreeResp> buildChildren(Map<Long, List<SysMenu>> grouped, Long parentId) {
         List<SysMenu> children = grouped.getOrDefault(parentId, new ArrayList<>());
         return children.stream().map(menu -> {
-            MenuTreeVO vo = toVO(menu);
+            MenuTreeResp vo = toVO(menu);
             vo.setChildren(buildChildren(grouped, menu.getId()));
             return vo;
         }).collect(Collectors.toList());
@@ -117,8 +117,8 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         return menu;
     }
 
-    private MenuTreeVO toVO(SysMenu menu) {
-        MenuTreeVO vo = new MenuTreeVO();
+    private MenuTreeResp toVO(SysMenu menu) {
+        MenuTreeResp vo = new MenuTreeResp();
         vo.setId(menu.getId());
         vo.setParentId(menu.getParentId());
         vo.setMenuName(menu.getMenuName());
@@ -133,7 +133,7 @@ public class AdminMenuServiceImpl implements AdminMenuService {
         return vo;
     }
 
-    private void fillFromReq(SysMenu menu, MenuSaveReqDTO req) {
+    private void fillFromReq(SysMenu menu, MenuSaveReq req) {
         menu.setParentId(req.getParentId());
         menu.setMenuName(req.getMenuName());
         menu.setType(req.getType());

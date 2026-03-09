@@ -1,9 +1,9 @@
 package com.fluxpay.admin.service;
 
-import com.fluxpay.admin.dto.user.UserPageReqDTO;
-import com.fluxpay.admin.dto.user.UserRespVO;
-import com.fluxpay.admin.dto.user.UserSaveReqDTO;
-import com.fluxpay.admin.dto.user.UserUpdateReqDTO;
+import com.fluxpay.admin.domain.vo.req.user.UserPageReq;
+import com.fluxpay.admin.domain.vo.resp.user.UserResp;
+import com.fluxpay.admin.domain.vo.req.user.UserSaveReq;
+import com.fluxpay.admin.domain.vo.req.user.UserUpdateReq;
 import com.fluxpay.common.dto.PageVO;
 
 import java.util.List;
@@ -16,24 +16,24 @@ public interface AdminUserService {
     /**
      * 分页查询用户列表
      */
-    PageVO<UserRespVO> page(UserPageReqDTO req);
+    PageVO<UserResp> page(UserPageReq req);
 
     /**
      * 根据 ID 查询用户详情（含角色列表）
      */
-    UserRespVO getById(Long id);
+    UserResp getById(Long id);
 
     /**
      * 新建管理员用户
      *
      * @return 新用户 ID
      */
-    Long save(UserSaveReqDTO req);
+    Long save(UserSaveReq req);
 
     /**
      * 更新用户信息（手机号 / 密码 / 状态）
      */
-    void update(Long id, UserUpdateReqDTO req);
+    void update(Long id, UserUpdateReq req);
 
     /**
      * 启用 / 禁用用户

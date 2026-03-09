@@ -1,9 +1,9 @@
 package com.fluxpay.admin.controller.sys;
 
-import com.fluxpay.admin.dto.user.UserPageReqDTO;
-import com.fluxpay.admin.dto.user.UserRespVO;
-import com.fluxpay.admin.dto.user.UserSaveReqDTO;
-import com.fluxpay.admin.dto.user.UserUpdateReqDTO;
+import com.fluxpay.admin.domain.vo.req.user.UserPageReq;
+import com.fluxpay.admin.domain.vo.resp.user.UserResp;
+import com.fluxpay.admin.domain.vo.req.user.UserSaveReq;
+import com.fluxpay.admin.domain.vo.req.user.UserUpdateReq;
 import com.fluxpay.admin.service.AdminUserService;
 import com.fluxpay.common.dto.PageVO;
 import com.fluxpay.common.result.Result;
@@ -35,26 +35,26 @@ public class SysUserController {
 
     /** 分页查询用户列表 */
     @GetMapping("/page")
-    public Result<PageVO<UserRespVO>> page(UserPageReqDTO req) {
+    public Result<PageVO<UserResp>> page(UserPageReq req) {
         return Result.ok(adminUserService.page(req));
     }
 
     /** 查询用户详情（含角色） */
     @GetMapping("/{id}")
-    public Result<UserRespVO> getById(@PathVariable Long id) {
+    public Result<UserResp> getById(@PathVariable Long id) {
         return Result.ok(adminUserService.getById(id));
     }
 
     /** 新建用户 */
     @PostMapping("/save")
-    public Result<Long> save(@Valid @RequestBody UserSaveReqDTO req) {
+    public Result<Long> save(@Valid @RequestBody UserSaveReq req) {
         return Result.ok(adminUserService.save(req));
     }
 
     /** 更新用户信息 */
     @PostMapping("/{id}/update")
     public Result<Void> update(@PathVariable Long id,
-                               @Valid @RequestBody UserUpdateReqDTO req) {
+                               @Valid @RequestBody UserUpdateReq req) {
         adminUserService.update(id, req);
         return Result.ok();
     }

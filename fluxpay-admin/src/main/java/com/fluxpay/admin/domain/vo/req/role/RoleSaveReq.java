@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.role;
+package com.fluxpay.admin.domain.vo.req.role;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,7 +8,7 @@ import lombok.Data;
  * 新建 / 修改角色请求
  */
 @Data
-public class RoleSaveReqDTO {
+public class RoleSaveReq {
 
     /** 角色名称 */
     @NotBlank(message = "角色名称不能为空")

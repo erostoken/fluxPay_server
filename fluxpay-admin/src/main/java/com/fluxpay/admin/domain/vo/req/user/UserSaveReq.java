@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.user;
+package com.fluxpay.admin.domain.vo.req.user;
 
 import com.fluxpay.common.crypto.annotation.EncryptedField;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import lombok.Data;
  * 新建管理员用户请求
  */
 @Data
-public class UserSaveReqDTO {
+public class UserSaveReq {
 
     /** 登录用户名 */
     @NotBlank(message = "用户名不能为空")

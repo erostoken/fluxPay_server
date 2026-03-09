@@ -1,7 +1,7 @@
 package com.fluxpay.admin.controller.auth;
 
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
-import com.fluxpay.admin.dto.profile.ProfileVO;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
+import com.fluxpay.admin.domain.vo.resp.profile.ProfileResp;
 import com.fluxpay.admin.service.ProfileService;
 import com.fluxpay.common.result.Result;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class ProfileController {
      * 前端登录成功后通常通过此接口初始化用户状态。
      */
     @GetMapping
-    public Result<ProfileVO> profile() {
+    public Result<ProfileResp> profile() {
         return Result.ok(profileService.getProfile());
     }
 
@@ -43,7 +43,7 @@ public class ProfileController {
      * <p>适用于前端动态路由生成场景，不包含按钮/接口权限节点。
      */
     @GetMapping("/menus")
-    public Result<List<MenuTreeVO>> menus() {
+    public Result<List<MenuTreeResp>> menus() {
         return Result.ok(profileService.getMenus());
     }
 }

@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.role;
+package com.fluxpay.admin.domain.vo.req.role;
 
 import com.fluxpay.common.dto.PageDTO;
 import lombok.Data;
@@ -9,7 +9,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class RolePageReqDTO extends PageDTO {
+public class RolePageReq extends PageDTO {
 
     /** 角色名称（模糊匹配） */
     private String roleName;

@@ -1,7 +1,7 @@
 package com.fluxpay.admin.service;
 
-import com.fluxpay.admin.dto.menu.MenuSaveReqDTO;
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
+import com.fluxpay.admin.domain.vo.req.menu.MenuSaveReq;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
 
 import java.util.List;
 
@@ -13,24 +13,24 @@ public interface AdminMenuService {
     /**
      * 查询完整菜单树（含禁用节点）
      */
-    List<MenuTreeVO> tree();
+    List<MenuTreeResp> tree();
 
     /**
      * 根据 ID 查询单个菜单
      */
-    MenuTreeVO getById(Long id);
+    MenuTreeResp getById(Long id);
 
     /**
      * 新建菜单
      *
      * @return 新菜单 ID
      */
-    Long save(MenuSaveReqDTO req);
+    Long save(MenuSaveReq req);
 
     /**
      * 修改菜单（全字段覆盖）
      */
-    void update(Long id, MenuSaveReqDTO req);
+    void update(Long id, MenuSaveReq req);
 
     /**
      * 删除菜单（若存在子菜单，则拒绝删除）

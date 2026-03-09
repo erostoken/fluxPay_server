@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.menu;
+package com.fluxpay.admin.domain.vo.req.menu;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,7 +8,7 @@ import lombok.Data;
  * 新建 / 修改菜单请求
  */
 @Data
-public class MenuSaveReqDTO {
+public class MenuSaveReq {
 
     /** 父级 ID，顶级菜单传 0 */
     @NotNull(message = "父级 ID 不能为空")

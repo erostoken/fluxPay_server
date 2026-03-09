@@ -1,17 +1,17 @@
-package com.fluxpay.admin.dto.profile;
+package com.fluxpay.admin.domain.vo.resp.profile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
 /**
- * 当前登录用户信息 VO
+ * 当前登录用户信息响应
  */
 @Data
-public class ProfileVO {
+public class ProfileResp {
 
     private Long    id;
     private String  username;
@@ -26,7 +26,7 @@ public class ProfileVO {
     private List<RoleVO> roles;
 
     /** 前端可访问的菜单树（仅目录和菜单类型，不包含按钮/接口） */
-    private List<MenuTreeVO> menus;
+    private List<MenuTreeResp> menus;
 
     @Data
     public static class RoleVO {

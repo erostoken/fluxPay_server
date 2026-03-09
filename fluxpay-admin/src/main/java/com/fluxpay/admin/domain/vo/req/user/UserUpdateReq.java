@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.user;
+package com.fluxpay.admin.domain.vo.req.user;
 
 import com.fluxpay.common.crypto.annotation.EncryptedField;
 import jakarta.validation.constraints.Pattern;
@@ -9,7 +9,7 @@ import lombok.Data;
  * 修改管理员用户请求（密码、状态可单独更新）
  */
 @Data
-public class UserUpdateReqDTO {
+public class UserUpdateReq {
 
     /** 手机号（前端 RSA 加密后传入） */
     @EncryptedField

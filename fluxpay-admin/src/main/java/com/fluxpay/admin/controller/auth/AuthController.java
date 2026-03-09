@@ -1,7 +1,7 @@
 package com.fluxpay.admin.controller.auth;
 
-import com.fluxpay.admin.dto.auth.LoginReqDTO;
-import com.fluxpay.admin.dto.auth.LoginRespVO;
+import com.fluxpay.admin.domain.vo.req.auth.LoginReq;
+import com.fluxpay.admin.domain.vo.resp.auth.LoginResp;
 import com.fluxpay.admin.service.AuthService;
 import com.fluxpay.common.result.Result;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class AuthController {
      * POST /auth/login
      */
     @PostMapping("/login")
-    public Result<LoginRespVO> login(@Valid @RequestBody LoginReqDTO req) {
+    public Result<LoginResp> login(@Valid @RequestBody LoginReq req) {
         return Result.ok(authService.login(req));
     }
 

@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.role;
+package com.fluxpay.admin.domain.vo.resp.role;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -7,10 +7,10 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 角色信息响应 VO
+ * 角色信息响应
  */
 @Data
-public class RoleRespVO {
+public class RoleResp {
 
     private Long id;
 

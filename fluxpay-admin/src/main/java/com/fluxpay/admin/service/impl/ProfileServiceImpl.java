@@ -1,8 +1,8 @@
 package com.fluxpay.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fluxpay.admin.dto.menu.MenuTreeVO;
-import com.fluxpay.admin.dto.profile.ProfileVO;
+import com.fluxpay.admin.domain.vo.resp.menu.MenuTreeResp;
+import com.fluxpay.admin.domain.vo.resp.profile.ProfileResp;
 import com.fluxpay.admin.security.SecurityUtils;
 import com.fluxpay.admin.service.ProfileService;
 import com.fluxpay.common.exception.BusinessException;
@@ -34,7 +34,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final SysMenuService     sysMenuService;
 
     @Override
-    public ProfileVO getProfile() {
+    public ProfileResp getProfile() {
         Long userId = SecurityUtils.getCurrentUserId();
 
         SysUser user = sysUserService.getById(userId);
@@ -48,14 +48,14 @@ public class ProfileServiceImpl implements ProfileService {
                 ? List.of()
                 : sysRoleService.listByIds(roleIds);
 
-        ProfileVO vo = new ProfileVO();
+        ProfileResp vo = new ProfileResp();
         vo.setId(user.getId());
         vo.setUsername(user.getUsername());
         vo.setPhone(user.getPhone());
         vo.setStatus(user.getStatus());
         vo.setLastLoginTime(user.getLastLoginTime());
         vo.setRoles(roles.stream().map(r -> {
-            ProfileVO.RoleVO rv = new ProfileVO.RoleVO();
+            ProfileResp.RoleVO rv = new ProfileResp.RoleVO();
             rv.setId(r.getId());
             rv.setRoleName(r.getRoleName());
             rv.setRoleCode(r.getRoleCode());
@@ -66,7 +66,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public List<MenuTreeVO> getMenus() {
+    public List<MenuTreeResp> getMenus() {
         // 查询所有启用且未删除的菜单（目录+菜单类型，过滤按钮/接口）
         List<SysMenu> allMenus = sysMenuService.list(
                 new LambdaQueryWrapper<SysMenu>()
@@ -90,23 +90,23 @@ public class ProfileServiceImpl implements ProfileService {
                 .collect(Collectors.toList());
     }
 
-    private List<MenuTreeVO> buildTree(List<SysMenu> all, Long parentId) {
+    private List<MenuTreeResp> buildTree(List<SysMenu> all, Long parentId) {
         Map<Long, List<SysMenu>> grouped = all.stream()
                 .collect(Collectors.groupingBy(SysMenu::getParentId));
         return buildChildren(grouped, parentId);
     }
 
-    private List<MenuTreeVO> buildChildren(Map<Long, List<SysMenu>> grouped, Long parentId) {
+    private List<MenuTreeResp> buildChildren(Map<Long, List<SysMenu>> grouped, Long parentId) {
         List<SysMenu> children = grouped.getOrDefault(parentId, new ArrayList<>());
         return children.stream().map(menu -> {
-            MenuTreeVO vo = toMenuVO(menu);
+            MenuTreeResp vo = toMenuVO(menu);
             vo.setChildren(buildChildren(grouped, menu.getId()));
             return vo;
         }).collect(Collectors.toList());
     }
 
-    private MenuTreeVO toMenuVO(SysMenu menu) {
-        MenuTreeVO vo = new MenuTreeVO();
+    private MenuTreeResp toMenuVO(SysMenu menu) {
+        MenuTreeResp vo = new MenuTreeResp();
         vo.setId(menu.getId());
         vo.setParentId(menu.getParentId());
         vo.setMenuName(menu.getMenuName());

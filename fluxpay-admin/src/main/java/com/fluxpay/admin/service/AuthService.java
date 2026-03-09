@@ -1,7 +1,7 @@
 package com.fluxpay.admin.service;
 
-import com.fluxpay.admin.dto.auth.LoginReqDTO;
-import com.fluxpay.admin.dto.auth.LoginRespVO;
+import com.fluxpay.admin.domain.vo.req.auth.LoginReq;
+import com.fluxpay.admin.domain.vo.resp.auth.LoginResp;
 
 /**
  * 认证 Service
@@ -11,7 +11,7 @@ public interface AuthService {
     /**
      * 登录，返回 Token 及用户信息
      */
-    LoginRespVO login(LoginReqDTO req);
+    LoginResp login(LoginReq req);
 
     /**
      * 登出：将当前 Access Token 加入 Redis 黑名单

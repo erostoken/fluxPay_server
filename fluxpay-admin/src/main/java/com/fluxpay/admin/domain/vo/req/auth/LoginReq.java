@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.auth;
+package com.fluxpay.admin.domain.vo.req.auth;
 
 import com.fluxpay.common.crypto.annotation.EncryptedField;
 import jakarta.validation.constraints.NotBlank;
@@ -10,7 +10,7 @@ import lombok.Data;
  * <p>{@code password} 字段需前端使用 RSA 公钥加密后传入（Base64 编码）。
  */
 @Data
-public class LoginReqDTO {
+public class LoginReq {
 
     @NotBlank(message = "用户名不能为空")
     private String username;

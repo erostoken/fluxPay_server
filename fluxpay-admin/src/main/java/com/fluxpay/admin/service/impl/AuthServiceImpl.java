@@ -2,9 +2,8 @@ package com.fluxpay.admin.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fluxpay.admin.config.JwtConfig;
-import com.fluxpay.admin.dto.auth.LoginReqDTO;
-import com.fluxpay.admin.dto.auth.LoginRespVO;
-import com.fluxpay.admin.dto.auth.UserInfoVO;
+import com.fluxpay.admin.domain.vo.req.auth.LoginReq;
+import com.fluxpay.admin.domain.vo.resp.auth.LoginResp;
 import com.fluxpay.admin.security.JwtAuthFilter;
 import com.fluxpay.admin.security.JwtUtils;
 import com.fluxpay.admin.service.AuthService;
@@ -18,7 +17,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -34,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
     private final StringRedisTemplate redisTemplate;
 
     @Override
-    public LoginRespVO login(LoginReqDTO req) {
+    public LoginResp login(LoginReq req) {
         // 1. 查用户
         SysUser user = sysUserService.getOne(
                 new LambdaQueryWrapper<SysUser>()
@@ -67,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
 
         log.info("Admin 登录成功: username={}, id={}", user.getUsername(), user.getId());
 
-        return LoginRespVO.builder()
+        return LoginResp.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .expiresIn(jwtConfig.getAccessTokenExpire())

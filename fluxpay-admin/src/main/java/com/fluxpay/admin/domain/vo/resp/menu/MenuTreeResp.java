@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.menu;
+package com.fluxpay.admin.domain.vo.resp.menu;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
@@ -8,12 +8,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 菜单树节点 VO
+ * 菜单树节点响应
  *
  * <p>根节点 children 包含所有子节点（递归结构），前端直接渲染菜单树。
  */
 @Data
-public class MenuTreeVO {
+public class MenuTreeResp {
 
     private Long   id;
     private Long   parentId;
@@ -31,5 +31,5 @@ public class MenuTreeVO {
     private Date createdTime;
 
     /** 子节点列表 */
-    private List<MenuTreeVO> children = new ArrayList<>();
+    private List<MenuTreeResp> children = new ArrayList<>();
 }

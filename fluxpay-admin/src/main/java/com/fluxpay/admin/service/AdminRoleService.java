@@ -1,8 +1,8 @@
 package com.fluxpay.admin.service;
 
-import com.fluxpay.admin.dto.role.RolePageReqDTO;
-import com.fluxpay.admin.dto.role.RoleRespVO;
-import com.fluxpay.admin.dto.role.RoleSaveReqDTO;
+import com.fluxpay.admin.domain.vo.req.role.RolePageReq;
+import com.fluxpay.admin.domain.vo.resp.role.RoleResp;
+import com.fluxpay.admin.domain.vo.req.role.RoleSaveReq;
 import com.fluxpay.common.dto.PageVO;
 
 import java.util.List;
@@ -15,29 +15,29 @@ public interface AdminRoleService {
     /**
      * 分页查询角色列表
      */
-    PageVO<RoleRespVO> page(RolePageReqDTO req);
+    PageVO<RoleResp> page(RolePageReq req);
 
     /**
      * 查询全部启用角色（供下拉框使用）
      */
-    List<RoleRespVO> list();
+    List<RoleResp> list();
 
     /**
      * 根据 ID 查询角色详情（含菜单 ID 列表）
      */
-    RoleRespVO getById(Long id);
+    RoleResp getById(Long id);
 
     /**
      * 新建角色
      *
      * @return 新角色 ID
      */
-    Long save(RoleSaveReqDTO req);
+    Long save(RoleSaveReq req);
 
     /**
      * 修改角色基本信息
      */
-    void update(Long id, RoleSaveReqDTO req);
+    void update(Long id, RoleSaveReq req);
 
     /**
      * 启用 / 禁用角色

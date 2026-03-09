@@ -1,4 +1,4 @@
-package com.fluxpay.admin.dto.auth;
+package com.fluxpay.admin.domain.vo.resp.auth;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class LoginRespVO {
+public class LoginResp {
 
     /** Access Token（有效期短，用于接口鉴权） */
     private String accessToken;

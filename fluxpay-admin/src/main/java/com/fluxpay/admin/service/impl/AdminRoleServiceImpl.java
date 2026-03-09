@@ -3,9 +3,9 @@ package com.fluxpay.admin.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fluxpay.admin.dto.role.RolePageReqDTO;
-import com.fluxpay.admin.dto.role.RoleRespVO;
-import com.fluxpay.admin.dto.role.RoleSaveReqDTO;
+import com.fluxpay.admin.domain.vo.req.role.RolePageReq;
+import com.fluxpay.admin.domain.vo.resp.role.RoleResp;
+import com.fluxpay.admin.domain.vo.req.role.RoleSaveReq;
 import com.fluxpay.admin.service.AdminRoleService;
 import com.fluxpay.common.dto.PageVO;
 import com.fluxpay.common.exception.BusinessException;
@@ -37,7 +37,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     private final SysUserRoleService sysUserRoleService;
 
     @Override
-    public PageVO<RoleRespVO> page(RolePageReqDTO req) {
+    public PageVO<RoleResp> page(RolePageReq req) {
         LambdaQueryWrapper<SysRole> wrapper = new LambdaQueryWrapper<SysRole>()
                 .eq(SysRole::getIsDeleted, 0)
                 .like(StringUtils.hasText(req.getRoleName()), SysRole::getRoleName, req.getRoleName())
@@ -52,7 +52,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
-    public List<RoleRespVO> list() {
+    public List<RoleResp> list() {
         List<SysRole> roles = sysRoleService.list(
                 new LambdaQueryWrapper<SysRole>()
                         .eq(SysRole::getIsDeleted, 0)
@@ -62,9 +62,9 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
-    public RoleRespVO getById(Long id) {
+    public RoleResp getById(Long id) {
         SysRole role = getExistRole(id);
-        RoleRespVO vo = toRespVO(role);
+        RoleResp vo = toRespVO(role);
         // 查询已绑定的菜单 ID 列表
         List<Long> menuIds = sysRoleMenuService
                 .list(new LambdaQueryWrapper<SysRoleMenu>().eq(SysRoleMenu::getRoleId, id))
@@ -76,7 +76,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
-    public Long save(RoleSaveReqDTO req) {
+    public Long save(RoleSaveReq req) {
         // roleCode 唯一性校验
         long count = sysRoleService.count(
                 new LambdaQueryWrapper<SysRole>()
@@ -96,7 +96,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
     }
 
     @Override
-    public void update(Long id, RoleSaveReqDTO req) {
+    public void update(Long id, RoleSaveReq req) {
         SysRole exist = getExistRole(id);
         // roleCode 若变更，校验唯一性
         if (!exist.getRoleCode().equals(req.getRoleCode())) {
@@ -174,8 +174,8 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         return role;
     }
 
-    private RoleRespVO toRespVO(SysRole role) {
-        RoleRespVO vo = new RoleRespVO();
+    private RoleResp toRespVO(SysRole role) {
+        RoleResp vo = new RoleResp();
         vo.setId(role.getId());
         vo.setRoleName(role.getRoleName());
         vo.setRoleCode(role.getRoleCode());
@@ -185,7 +185,7 @@ public class AdminRoleServiceImpl implements AdminRoleService {
         return vo;
     }
 
-    private void fillFromReq(SysRole role, RoleSaveReqDTO req) {
+    private void fillFromReq(SysRole role, RoleSaveReq req) {
         role.setRoleName(req.getRoleName());
         role.setRoleCode(req.getRoleCode());
         role.setDescription(req.getDescription());

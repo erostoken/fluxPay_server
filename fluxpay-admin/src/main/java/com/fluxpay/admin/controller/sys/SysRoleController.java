@@ -1,8 +1,8 @@
 package com.fluxpay.admin.controller.sys;
 
-import com.fluxpay.admin.dto.role.RolePageReqDTO;
-import com.fluxpay.admin.dto.role.RoleRespVO;
-import com.fluxpay.admin.dto.role.RoleSaveReqDTO;
+import com.fluxpay.admin.domain.vo.req.role.RolePageReq;
+import com.fluxpay.admin.domain.vo.resp.role.RoleResp;
+import com.fluxpay.admin.domain.vo.req.role.RoleSaveReq;
 import com.fluxpay.admin.service.AdminRoleService;
 import com.fluxpay.common.dto.PageVO;
 import com.fluxpay.common.result.Result;
@@ -35,32 +35,32 @@ public class SysRoleController {
 
     /** 分页查询角色列表 */
     @GetMapping("/page")
-    public Result<PageVO<RoleRespVO>> page(RolePageReqDTO req) {
+    public Result<PageVO<RoleResp>> page(RolePageReq req) {
         return Result.ok(adminRoleService.page(req));
     }
 
     /** 查询全部启用角色（供下拉框使用） */
     @GetMapping("/list")
-    public Result<List<RoleRespVO>> list() {
+    public Result<List<RoleResp>> list() {
         return Result.ok(adminRoleService.list());
     }
 
     /** 查询角色详情（含菜单 ID 列表） */
     @GetMapping("/{id}")
-    public Result<RoleRespVO> getById(@PathVariable Long id) {
+    public Result<RoleResp> getById(@PathVariable Long id) {
         return Result.ok(adminRoleService.getById(id));
     }
 
     /** 新建角色 */
     @PostMapping("/save")
-    public Result<Long> save(@Valid @RequestBody RoleSaveReqDTO req) {
+    public Result<Long> save(@Valid @RequestBody RoleSaveReq req) {
         return Result.ok(adminRoleService.save(req));
     }
 
     /** 修改角色信息 */
     @PostMapping("/{id}/update")
     public Result<Void> update(@PathVariable Long id,
-                               @Valid @RequestBody RoleSaveReqDTO req) {
+                               @Valid @RequestBody RoleSaveReq req) {
         adminRoleService.update(id, req);
         return Result.ok();
     }
