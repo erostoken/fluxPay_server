@@ -1,4 +1,4 @@
-package com.fluxpay.admin.controller.menu;
+package com.fluxpay.admin.controller.sys;
 
 import com.fluxpay.admin.dto.menu.MenuSaveReqDTO;
 import com.fluxpay.admin.dto.menu.MenuTreeVO;
@@ -14,12 +14,12 @@ import java.util.List;
  * 系统菜单管理接口
  *
  * <pre>
- *   GET  /menus              查询完整菜单树
- *   GET  /menus/{id}         查询单个菜单
- *   POST /menus/save         新建菜单
- *   POST /menus/{id}/update  修改菜单
- *   POST /menus/{id}/delete  删除菜单
- *   POST /menus/{id}/status  启用/禁用菜单
+ *   GET  /sys/menus              查询完整菜单树
+ *   GET  /sys/menus/{id}         查询单个菜单
+ *   POST /sys/menus/save         新建菜单
+ *   POST /sys/menus/{id}/update  修改菜单
+ *   POST /sys/menus/{id}/delete  删除菜单
+ *   POST /sys/menus/{id}/status  启用/禁用菜单
  * </pre>
  */
 @RestController

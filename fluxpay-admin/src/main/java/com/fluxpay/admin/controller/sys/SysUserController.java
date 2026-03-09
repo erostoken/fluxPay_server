@@ -1,4 +1,4 @@
-package com.fluxpay.admin.controller.user;
+package com.fluxpay.admin.controller.sys;
 
 import com.fluxpay.admin.dto.user.UserPageReqDTO;
 import com.fluxpay.admin.dto.user.UserRespVO;
@@ -17,13 +17,13 @@ import java.util.List;
  * 用户管理接口
  *
  * <pre>
- *   GET  /users                    分页查询
- *   GET  /users/{id}               查询详情
- *   POST /users/save                新建用户
- *   POST /users/{id}/update        更新用户
- *   POST /users/{id}/status        启用/禁用
- *   POST /users/{id}/delete        删除用户
- *   POST /users/{id}/roles         分配角色
+ *   GET  /sys/users                    分页查询
+ *   GET  /sys/users/{id}               查询详情
+ *   POST /sys/users/save                新建用户
+ *   POST /sys/users/{id}/update        更新用户
+ *   POST /sys/users/{id}/status        启用/禁用
+ *   POST /sys/users/{id}/delete        删除用户
+ *   POST /sys/users/{id}/roles         分配角色
  * </pre>
  */
 @RestController

@@ -50,7 +50,10 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 请求授权
                 .authorizeHttpRequests(auth -> auth
+                        // 放行登录接口、静态资源等
                         .requestMatchers(WHITE_LIST).permitAll()
+                        // 【关键】必须放行 OPTIONS 预检请求，否则 CORS 报错
+                        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // JWT 过滤器置于 UsernamePasswordAuthenticationFilter 之前

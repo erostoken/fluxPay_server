@@ -1,4 +1,4 @@
-package com.fluxpay.admin.controller.profile;
+package com.fluxpay.admin.controller.auth;
 
 import com.fluxpay.admin.dto.menu.MenuTreeVO;
 import com.fluxpay.admin.dto.profile.ProfileVO;
